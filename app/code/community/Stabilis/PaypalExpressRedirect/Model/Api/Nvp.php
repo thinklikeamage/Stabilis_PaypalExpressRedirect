@@ -20,7 +20,7 @@
  * needs please do so within the local code pool.
  *
  * @category    Stabilis
- * @package     Stabilis_Core
+ * @package     Stabilis_PaypalExpressRedirect
  * @copyright  Copyright (c) 2007-2016 Luke A. Leber (https://www.thinklikeamage.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -53,7 +53,6 @@
  * 
  * @category   Stabilis
  * @package    Stabilis_PaypalExpressRedirect
- * @author     Luke Leber <lukeleber@gmail.com>
  */
 class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api_Nvp {
 
@@ -72,18 +71,27 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
      * 
      * @param array $response
      * 
-     * @throws Exception
+     * @throws Exception if an error exists within the response
      */
     protected function _handleCallErrors($response) {
         try {
+
+            /// Let the default functionality take its course
             parent::_handleCallErrors($response);
+
         } catch (Exception $ex) {
+
+            /// Check if there is a single error code that is within our list
             if (count($this->_callErrors) == 1 && 
                     in_array($this->_callErrors[0], static::$_redirectErrors)) {
+
+                /// Redirect the user back to PayPal (with the same Express Checkout token)
                 Mage::app()->getFrontController()->getResponse()
                         ->setRedirect(Mage::getUrl('paypal/express/edit'))
                         ->sendResponse();
             }
+
+            /// Rethrow the exception
             throw $ex;
         }
     }
