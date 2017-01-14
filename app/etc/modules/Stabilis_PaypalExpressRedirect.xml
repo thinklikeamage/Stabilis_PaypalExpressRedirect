@@ -29,7 +29,7 @@
     <modules>
         <Stabilis_PaypalExpressRedirect>
             <active>true</active>
-            <codePool>local</codePool>
+            <codePool>community</codePool>
             <depends>
                 <Mage_Paypal />
             	<Stabilis_Core />
