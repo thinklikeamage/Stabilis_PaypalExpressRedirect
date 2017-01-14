@@ -56,6 +56,9 @@
  */
 class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api_Nvp {
 
+    /** @var int Symbolic constant for HTTP/302 */
+    const HTTP_TEMPORARY_REDIRECT = 302;
+    
     /** @var string[] The array of error codes to be handled specially */
     protected static $_redirectErrors = array(
         '10417', 
@@ -66,12 +69,27 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
     );
     
     /**
+     * Internal Constructor
+     */
+    protected function _construct() {
+        parent::_construct();
+        
+        /// Magento 1.9+ has added the DoExpressCheckoutPayment method to the required response params array.
+        /// This array is checked prior to any error checking, therefore an error condition will trigger an 
+        /// early exit (even if the error is recoverable).  So we'll remove the 'AMT' field from the required 
+        /// params array.
+        if (version_compare(Mage::getVersion(), '1.9', '>=')) {
+            $this->_requiredResponseParams[static::DO_EXPRESS_CHECKOUT_PAYMENT] = array('ACK', 'CORRELATIONID');
+        }
+    }
+    
+    /**
      * Extends the functionality of the parent method by setting a redirect to 
      * PayPal in the event of certain error conditions.
      * 
      * @param array $response
      * 
-     * @throws Exception if an error exists within the response
+     * @throws Exception if an unrecoverable error exists within the response
      */
     protected function _handleCallErrors($response) {
         try {
@@ -80,19 +98,26 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
             parent::_handleCallErrors($response);
 
         } catch (Exception $ex) {
-
+            
             /// Check if there is a single error code that is within our list
             if (count($this->_callErrors) == 1 && 
                     in_array($this->_callErrors[0], static::$_redirectErrors)) {
 
                 /// Redirect the user back to PayPal (with the same Express Checkout token)
                 Mage::app()->getFrontController()->getResponse()
-                        ->setRedirect(Mage::getUrl('paypal/express/edit'))
+                        ->setRedirect(Mage::getUrl('paypal/express/edit'), self::HTTP_TEMPORARY_REDIRECT)
                         ->sendResponse();
+                exit;
+            } elseif (version_compare(Mage::getVersion(), '1.9', '>=')) {
+                
+                /// Preserve Magneto 1.9+ Behavior
+                Mage::throwException(Mage::helper('paypal')
+                        ->__('There was an error processing your order. Please contact us or try again later.'));
+            } else {
+                
+                /// Preserve Magento <= 1.9 Behavior
+                throw $ex;
             }
-
-            /// Rethrow the exception
-            throw $ex;
         }
     }
 }
