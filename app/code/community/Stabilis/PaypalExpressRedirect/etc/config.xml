@@ -31,7 +31,23 @@
             <version>1.0.0</version>
         </Stabilis_PaypalExpressRedirect>
     </modules>
+        <frontend>
+            <translate>
+                <modules>
+                    <kingdom_paypal>
+                        <files>
+                            <default>Stabilis_PaypalExpressRedirect.csv</default>
+                        </files>
+                    </kingdom_paypal>
+                </modules>
+            </translate>
+        </frontend>
     <global>
+        <helpers>
+            <stabilis_paypalexpressredirect>
+                <class>Stabilis_PaypalExpressRedirect_Helper</class>
+            </stabilis_paypalexpressredirect>
+        </helpers>
         <models>
             <paypal>
                 <rewrite>

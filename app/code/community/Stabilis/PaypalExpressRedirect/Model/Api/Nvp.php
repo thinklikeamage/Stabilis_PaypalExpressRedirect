@@ -35,21 +35,13 @@
  * 
  * The following error conditions fall into this category:
  * 
+ * Error 10486 - The transaction could not be completed (for an unknown reason)
+ * 
+ * The following error conditions have had their messages made user-friendly:
+ * 
  * Error 10736 - PayPal has determined that the shipping address does not exist
  * Error 10417 - Customer must choose another funding source from their wallet
  * Error 10422 - Customer must choose new funding sources
- * Error 10485 - Payment has not been authorized by the user
- * Error 10486 - The transaction could not be completed (for an unknown reason)
- * 
- * The following errors should also be redirected back to PayPal (after fixing 
- * something on our end):
- * 
- * Error 10411 - The Express Checkout session has expired
- * Error 10412 - Payment has already been made for this InvoiceID
- * 
- * The following errors *can* be redirected to PayPal, but it might not work:
- * 
- * Error 10445 - This is an internal PayPal error
  * 
  * @category   Stabilis
  * @package    Stabilis_PaypalExpressRedirect
@@ -59,14 +51,17 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
     /** @var int Symbolic constant for HTTP/302 */
     const HTTP_TEMPORARY_REDIRECT = 302;
     
-    /** @var string[] The array of error codes to be handled specially */
-    protected static $_redirectErrors = array(
-        '10417', 
-        '10422', 
-        '10485', 
-        '10486', 
-        '10736'
-    );
+    /** @var int https://developer.paypal.com/docs/classic/express-checkout/ht_ec_fundingfailure10486/ */
+    const API_UNABLE_TRANSACTION_COMPLETE       = 10486;
+
+    /** @var int https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ1375&actp=LIST */
+    const API_UNABLE_PROCESS_PAYMENT_ERROR_CODE = 10417;
+
+    /** @var int https://www.paypal-knowledge.com/infocenter/index?page=content&expand=true&locale=en_US&id=FAQ1850 */
+    const API_DO_EXPRESS_CHECKOUT_FAIL          = 10422;
+
+    /** @var int https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ2025&actp=LIST */
+    const API_BAD_SHIPPING_ADDRESS              = 10736;
     
     /**
      * Internal Constructor
@@ -80,6 +75,26 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
         /// params array.
         if (version_compare(Mage::getVersion(), '1.9', '>=')) {
             $this->_requiredResponseParams[static::DO_EXPRESS_CHECKOUT_PAYMENT] = array('ACK', 'CORRELATIONID');
+        }
+    }
+
+    /**
+     * Throws an exception that is dependent upon the version of Magento.
+     * 
+     * @param Exception $ex the exception to throw in Magento version <= 1.8
+     * 
+     * @throws Exception
+     */
+    protected function _rethrow($ex) {
+        if (version_compare(Mage::getVersion(), '1.9', '>=')) {
+
+            /// Preserve Magneto 1.9+ Behavior
+            Mage::throwException(Mage::helper('paypal')
+                    ->__('There was an error processing your order. Please contact us or try again later.'));
+        } else {
+
+            /// Preserve Magento <= 1.9 Behavior
+            throw $ex;
         }
     }
     
@@ -99,24 +114,35 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
 
         } catch (Exception $ex) {
             
-            /// Check if there is a single error code that is within our list
-            if (count($this->_callErrors) == 1 && 
-                    in_array($this->_callErrors[0], static::$_redirectErrors)) {
+            /// If there's more than one error, then there's no silver bullet.
+            if(count($this->_callErrors) > 1) {
+                $this->_rethrow($ex);
+            }
+            
+            switch($this->_callErrors[0]) {
 
-                /// Redirect the user back to PayPal (with the same Express Checkout token)
-                Mage::app()->getFrontController()->getResponse()
-                        ->setRedirect(Mage::getUrl('paypal/express/edit'), self::HTTP_TEMPORARY_REDIRECT)
+                /// Redirect the user back to PayPal
+                case self::API_UNABLE_TRANSACTION_COMPLETE:
+                    Mage::app()->getFrontController()->getResponse()
+                        ->setRedirect(Mage::getUrl('paypal/express/edit'))
                         ->sendResponse();
-                exit;
-            } elseif (version_compare(Mage::getVersion(), '1.9', '>=')) {
-                
-                /// Preserve Magneto 1.9+ Behavior
-                Mage::throwException(Mage::helper('paypal')
-                        ->__('There was an error processing your order. Please contact us or try again later.'));
-            } else {
-                
-                /// Preserve Magento <= 1.9 Behavior
-                throw $ex;
+                    exit;
+
+                /// Give the user an option to click a link to go back and 
+                /// select another funding source
+                case self::API_UNABLE_PROCESS_PAYMENT_ERROR_CODE:
+                case self::API_DO_EXPRESS_CHECKOUT_FAIL:
+                    Mage::throwException(Mage::helper('stabilis_paypalexpressredirect')
+                        ->__('PayPal could not process your payment at this time.  Please <a href="%s">click here</a> to select a different payment method from within your PayPal account and try again.', Mage::getUrl('paypal/express/edit')));
+
+                /// The shipping address isn't right.  Fix it on this page.
+                case self::API_BAD_SHIPPING_ADDRESS:
+                    Mage::throwException(Mage::helper('stabilis_paypalexpressredirect')
+                        ->__('PayPal has determined that the specified shipping address does not exist.  Please double-check your shipping address and try again.'));
+                    
+                /// Other error?  Let the caller handle it.
+                default:
+                    $this->_rethrow($ex);
             }
         }
     }
