@@ -124,7 +124,7 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
                 /// Redirect the user back to PayPal
                 case self::API_UNABLE_TRANSACTION_COMPLETE:
                     Mage::app()->getFrontController()->getResponse()
-                        ->setRedirect(Mage::getUrl('paypal/express/edit'))
+                        ->setRedirect(Mage::getUrl('paypal/express/edit'), static::HTTP_TEMPORARY_REDIRECT)
                         ->sendResponse();
                     exit;
 
