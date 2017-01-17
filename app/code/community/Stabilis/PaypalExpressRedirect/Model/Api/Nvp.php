@@ -93,7 +93,7 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
                     ->__('There was an error processing your order. Please contact us or try again later.'));
         } else {
 
-            /// Preserve Magento <= 1.9 Behavior
+            /// Preserve Magento <= 1.8 Behavior
             throw $ex;
         }
     }
