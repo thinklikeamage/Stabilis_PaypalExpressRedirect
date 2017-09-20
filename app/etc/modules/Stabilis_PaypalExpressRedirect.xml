@@ -32,7 +32,6 @@
             <codePool>community</codePool>
             <depends>
                 <Mage_Paypal />
-            	<Stabilis_Core />
             </depends>
         </Stabilis_PaypalExpressRedirect>
     </modules>
