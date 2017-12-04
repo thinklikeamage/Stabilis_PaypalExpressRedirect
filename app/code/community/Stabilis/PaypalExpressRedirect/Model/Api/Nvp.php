@@ -112,7 +112,7 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
      *   <code>
      *       class Third_Party_Model_Observer {
      *
-     *           public function onPayPalExpressRedirect($observer) {
+     *           public function onPayPalExpressRedirect(\Varien_Event_Observer $observer) {
      *
      *               $errorCode = $observer->getEvent()->getErrorCode();
      *
@@ -133,7 +133,7 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
         try {
 
             // Wrapped in a try-catch block, invoke any third party code that is listening
-            Mage::dispatchEvent(static::EVENT_EXPRESS_REDIRECT_TRIGGERED, array('code' => $error));
+            Mage::dispatchEvent(static::EVENT_EXPRESS_REDIRECT_TRIGGERED, array('errorCode' => $error));
 
         } catch(Exception $thirdPartyException) {
 
