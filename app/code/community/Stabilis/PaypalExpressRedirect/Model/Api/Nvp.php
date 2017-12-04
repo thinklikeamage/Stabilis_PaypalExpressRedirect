@@ -63,6 +63,9 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
     /** @var int https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ2025&actp=LIST */
     const API_BAD_SHIPPING_ADDRESS              = 10736;
     
+    /** @var string The identifier of the event that is dispatched when an express redirect is triggered */
+    const EVENT_EXPRESS_REDIRECT_TRIGGERED      = 'stabilis_paypalexpressredirect_redirect_triggered';
+
     /**
      * Internal Constructor
      */
@@ -97,6 +100,50 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
             throw $ex;
         }
     }
+
+    /**
+     * Dispatches an event that third party code can handle.
+     *
+     * This event will fire when the user is redirected back to PayPal after payment failure.
+     *
+     * @param int $error the error condition that triggered the redirect
+     *
+     * @example
+     *   <code>
+     *       class Third_Party_Model_Observer {
+     *
+     *           public function onPayPalExpressRedirect($observer) {
+     *
+     *               $errorCode = $observer->getEvent()->getErrorCode();
+     *
+     *               // Custom logging?
+     *               // Perhaps send an email or SMS notification.
+     *           }
+     *       }
+     *   </code>
+     */
+    protected function _dispatchRedirectEvent($error) {
+
+        // Any data sent to the client prior to the redirect header could be detrimental.
+        // So start collecting all output into a temporary buffer that will be later destroyed.
+        //
+        // Never trust third party code.
+        ob_start();
+
+        try {
+
+            // Wrapped in a try-catch block, invoke any third party code that is listening
+            Mage::dispatchEvent(static::EVENT_EXPRESS_REDIRECT_TRIGGERED, array('code' => $error));
+
+        } catch(Exception $thirdPartyException) {
+
+            // Did the third party code throw an exception?  Log it and continue.
+            Mage::logException($thirdPartyException);
+        }
+
+        // Destroy the temporary output buffer
+        ob_end_clean();
+    }
     
     /**
      * Extends the functionality of the parent method by setting a redirect to 
@@ -119,7 +166,11 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
                 $this->_rethrow($ex);
             }
             
-            switch($this->_callErrors[0]) {
+            $error = $this->_callErrors[0];
+
+            $this->_dispatchRedirectEvent($error);
+
+            switch($error) {
 
                 /// Redirect the user back to PayPal
                 case self::API_UNABLE_TRANSACTION_COMPLETE:
