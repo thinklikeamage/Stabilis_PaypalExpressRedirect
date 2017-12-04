@@ -1,4 +1,4 @@
-![#efb515](http://placehold.it/15/f03c15/000000?text=+) Notice: PayPal has declared that the SOAP/NVP integration method is Deprecated as of January 1, 2017.  Please review their <a href="https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/">New Integrations Guide</a>.
+![#efb515](http://placehold.it/15/efb515/000000?text=+) Notice: PayPal has declared that the SOAP/NVP integration method is Deprecated as of January 1, 2017.  Please review their <a href="https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/">New Integrations Guide</a>.
 
 This extension will continue to function as expected until PayPal discontinues support for the SOAP/NVP integration method.  At such a time, this documentation will be updated to reflect this.
 # Some PayPal error conditions are recoverable.
