@@ -30,6 +30,6 @@
  * @category   Stabilis
  * @package    Stabilis_PaypalExpressRedirect
  */
-class Stabilis_PaypalExpressRedirect_Helper_Data extends Stabilis_Core_Helper_Data {
+class Stabilis_PaypalExpressRedirect_Helper_Data extends Mage_Core_Helper_Data {
     
 }
