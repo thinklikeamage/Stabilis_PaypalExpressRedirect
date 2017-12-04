@@ -1,3 +1,6 @@
+![#f03c15](http://placehold.it/15/f03c15/000000?text=+) Warning: PayPal has declared that the SOAP/NVP integration method is Deprecated as of January 1, 2017.  Please review their <a href="https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/">New Integrations Guide</a>.
+
+This extension will continue to function as expected until PayPal discontinues support for the SOAP/NVP integration method.
 # Some PayPal error conditions are recoverable.
 ## Enhance your store by letting your customers recover a failed check out.
 <img src="https://www.paypalobjects.com/webstatic/en_US/developer/docs/ec/EC_10486redirect2.png" />
