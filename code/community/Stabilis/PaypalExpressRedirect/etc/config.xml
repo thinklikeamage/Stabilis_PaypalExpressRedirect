@@ -49,6 +49,9 @@
             </stabilis_paypalexpressredirect>
         </helpers>
         <models>
+            <stabilis_paypalexpressredirect>
+                <class>Stabilis_PaypalExpressRedirect_Model</class>
+            </stabilis_paypalexpressredirect>
             <paypal>
                 <rewrite>
                     <api_nvp>Stabilis_PaypalExpressRedirect_Model_Api_Nvp</api_nvp>
