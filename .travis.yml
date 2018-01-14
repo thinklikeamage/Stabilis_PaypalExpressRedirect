@@ -7,7 +7,7 @@ env:
 #    - SKIP_CLEANUP=1
   - MAGENTO_VERSION=magento-mirror-1.8.1.0
 script:
-  - curl -sSL https://raw.githubusercontent.com/AOEpeople/MageTestStand/master/setup.sh | bash
+  - curl -sSL https://github.com/LukeLeber/MageTestStand/blob/master/setup.sh | bash
 notifications:
   email:
     recipients:
