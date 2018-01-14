@@ -59,7 +59,7 @@
     <phpunit>
         <suite>
             <modules>
-                <stabilis_paypalexpressredirect />
+                <Stabilis_PaypalExpressRedirect />
          </modules>
     </suite>
     </phpunit>
