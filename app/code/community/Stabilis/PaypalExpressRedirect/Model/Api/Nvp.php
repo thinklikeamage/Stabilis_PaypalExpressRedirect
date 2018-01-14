@@ -21,7 +21,7 @@
  *
  * @category    Stabilis
  * @package     Stabilis_PaypalExpressRedirect
- * @copyright  Copyright (c) 2007-2016 Luke A. Leber (https://www.thinklikeamage.com)
+ * @copyright  Copyright (c) 2007-2018 Luke A. Leber (https://www.thinklikeamage.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -133,7 +133,7 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
         try {
 
             // Wrapped in a try-catch block, invoke any third party code that is listening
-            Mage::dispatchEvent(static::EVENT_EXPRESS_REDIRECT_TRIGGERED, array('errorCode' => $error));
+            Mage::dispatchEvent(static::EVENT_EXPRESS_REDIRECT_TRIGGERED, array('error_code' => $error));
 
         } catch(Exception $thirdPartyException) {
 

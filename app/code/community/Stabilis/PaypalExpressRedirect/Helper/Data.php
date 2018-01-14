@@ -20,7 +20,7 @@
  *
  * @category    Stabilis
  * @package     Stabilis_PaypalExpressRedirect
- * @copyright  Copyright (c) 2007-2016 Luke A. Leber (https://www.thinklikeamage.com)
+ * @copyright  Copyright (c) 2007-2018 Luke A. Leber (https://www.thinklikeamage.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
