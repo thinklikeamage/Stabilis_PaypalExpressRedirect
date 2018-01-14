@@ -2,6 +2,7 @@ code/community/Stabilis/PaypalExpressRedirect/Helper/Data.php app/code/community
 code/community/Stabilis/PaypalExpressRedirect/Model/Api/Nvp.php app/code/community/Stabilis/PaypalExpressRedirect/Model/Api/Nvp.php
 code/community/Stabilis/PaypalExpressRedirect/etc/config.xml app/code/community/Stabilis/PaypalExpressRedirect/etc/config.xml
 code/community/Stabilis/PaypalExpressRedirect/Test/Helper/Data.php app/code/community/Stabilis/PaypalExpressRedirect/Test/Helper/Data.php
+code/community/Stabilis/PaypalExpressRedirect/Test/Model/Api/Nvp.php app/code/community/Stabilis/PaypalExpressRedirect/Test/Model/Api/Nvp.php
 etc/modules/Stabilis_PaypalExpressRedirect.xml app/etc/modules/Stabilis_PaypalExpressRedirect.xml
 locale/en_US/Stabilis_PaypalExpressRedirect.csv app/locale/en_US/Stabilis_PaypalExpressRedirect.csv
 locale/es_ES/Stabilis_PaypalExpressRedirect.csv app/locale/es_ES/Stabilis_PaypalExpressRedirect.csv
