@@ -1,5 +1,8 @@
 <?php
-
+echo '---------------------------------------------';
+echo 'I AM BEING LOADED';
+echo '---------------------------------------------';
+die;
 class Stabilis_PaypalExpressRedirect_Test_Helper_Data extends EcomDev_PHPUnit_Test_Case {
 	
 	protected $_helper;
