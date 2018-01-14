@@ -56,4 +56,11 @@
             </paypal>
         </models>
     </global>
+    <phpunit>
+        <suite>
+            <modules>
+                <stabilis_paypalexpressredirect />
+         </modules>
+    </suite>
+    </phpunit>
 </config>
