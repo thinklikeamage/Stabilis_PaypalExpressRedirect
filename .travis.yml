@@ -6,10 +6,8 @@ env:
 #    - MAGENTO_DB_ALLOWSAME=1
 #    - SKIP_CLEANUP=1
   - MAGENTO_VERSION=magento-mirror-1.8.1.0
-before_install:
-  - sudo apt-get install dos2unix
 script:
-  - curl -sSL https://github.com/LukeLeber/MageTestStand/blob/master/setup.sh | dos2unix | bash
+  - curl -sSL https://raw.githubusercontent.com/LukeLeber/MageTestStand/master/setup.sh | bash
 notifications:
   email:
     recipients:
