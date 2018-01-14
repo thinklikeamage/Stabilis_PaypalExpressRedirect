@@ -48,22 +48,74 @@
  */
 class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api_Nvp {
 
-    /** @var int Symbolic constant for HTTP/302 */
+	/**
+	 * Symbolic constant for HTTP/302.
+	 * 
+	 * @var int
+	 */
     const HTTP_TEMPORARY_REDIRECT = 302;
     
-    /** @var int https://developer.paypal.com/docs/classic/express-checkout/ht_ec_fundingfailure10486/ */
+	/**
+	 * The PayPal error code 10486.
+	 * 
+	 * @var int
+	 */
     const API_UNABLE_TRANSACTION_COMPLETE       = 10486;
+	
+	/**
+	 * The PayPal help page for error code 10486.
+	 * 
+	 * @var string
+	 */
+	const API_HELP_UNABLE_TRANSACTION_COMPLETE  = 'https://developer.paypal.com/docs/classic/express-checkout/ht_ec_fundingfailure10486/';
 
-    /** @var int https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ1375&actp=LIST */
-    const API_UNABLE_PROCESS_PAYMENT_ERROR_CODE = 10417;
+	/**
+	 * The PayPal error code 10417.
+	 * 
+	 * @var int
+	 */
+    const API_UNABLE_PROCESS_PAYMENT = 10417;
 
-    /** @var int https://www.paypal-knowledge.com/infocenter/index?page=content&expand=true&locale=en_US&id=FAQ1850 */
+	/**
+	 * The PayPal help page for error code 10417.
+	 * 
+	 * @var string
+	 */
+	const API_HELP_UNABLE_PROCESS_PAYMENT = 'https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ1375&actp=LIST';
+	
+    /**
+	 * The PayPal error code 10422.
+	 * 
+	 * @var int
+	 */
     const API_DO_EXPRESS_CHECKOUT_FAIL          = 10422;
 
-    /** @var int https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ2025&actp=LIST */
+	/**
+	 * The PayPal help page for error code 10422.
+	 * 
+	 * @var string
+	 */
+	const API_HELP_DO_EXPRESS_CHECKOUT_FAIL = 'https://www.paypal-knowledge.com/infocenter/index?page=content&expand=true&locale=en_US&id=FAQ1850';
+	
+	/**
+	 * The PayPal error code 10736.
+	 * 
+	 * @var int
+	 */
     const API_BAD_SHIPPING_ADDRESS              = 10736;
     
-    /** @var string The identifier of the event that is dispatched when an express redirect is triggered */
+	/**
+	 * The PayPal help page for error code 10736.
+	 * 
+	 * @var int
+	 */
+	const API_HELP_BAD_SHIPPING_ADDRESS = 'https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ2025&actp=LIST';
+	
+    /** 
+	 * The identifier of the event that is dispatched when an express redirect is triggered.
+	 * 
+	 * @var string
+	 */
     const EVENT_EXPRESS_REDIRECT_TRIGGERED      = 'stabilis_paypalexpressredirect_redirect_triggered';
 
     /**
@@ -181,7 +233,7 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
 
                 /// Give the user an option to click a link to go back and 
                 /// select another funding source
-                case self::API_UNABLE_PROCESS_PAYMENT_ERROR_CODE:
+                case self::API_UNABLE_PROCESS_PAYMENT:
                 case self::API_DO_EXPRESS_CHECKOUT_FAIL:
                     Mage::throwException(Mage::helper('stabilis_paypalexpressredirect')
                         ->__('PayPal could not process your payment at this time.  Please <a href="%s">click here</a> to select a different payment method from within your PayPal account and try again.', Mage::getUrl('paypal/express/edit')));
