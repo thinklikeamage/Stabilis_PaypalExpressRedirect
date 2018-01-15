@@ -175,7 +175,7 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
                 static::EVENT_EXPRESS_REDIRECT_TRIGGERED,
                 array(
                     'error_code' => $error,
-                    'error_message' => static::$_errors[$error]
+                    'error_message' => $this->_errors[$error]
                 )
             );
 
@@ -213,7 +213,7 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
             $error = $this->_callErrors[0];
 
             // If the error code is one we handle, dispatch an event.
-            if(isset(static::$_errors[$error])) {
+            if(isset($this->_errors[$error])) {
                 $this->_dispatchRedirectEvent($error);
             }
 
