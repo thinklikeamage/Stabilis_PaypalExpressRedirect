@@ -64,7 +64,7 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 	}
 	
 	public function testUnsupportedResponse() {
-		$expected = 'PayPal gateway has rejected request. Long Message (#12345: Short Message)';
+		$expected = 'PayPal gateway has rejected request. Long Message (#12345: Short Message).';
 		$method = $this->_getHandleCallErrorsMethod();
 		try {
 			$method->invoke($this->_model, $this->_getFailureResponse(12345));
