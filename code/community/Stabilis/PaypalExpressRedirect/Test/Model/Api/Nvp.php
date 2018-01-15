@@ -303,16 +303,19 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 
         $redirected = false;
 
+		$mock = $this->getMock('Stabilis_PaypalExpressRedirect_Helper_Data');
+
+        $mock->expects($this->once())
+             ->method('redirectUser')
+             ->willReturn(function() use(&$redirected) {
+                 $redirected = true;
+            });
+
 		// Ensure that the helper method doesn't actually terminate the process.
         $this->replaceByMock(
             'helper',
             'stabilis/paypalexpressredirect',
-            $this->getMock('Stabilis_PaypalExpressRedirect_Helper_Data')
-                ->expects($this->once())
-                ->method('redirectUser')
-				->willReturn(function() use(&$redirected) {
-                    $redirected = true;
-				})
+            $mock
         );
 
 		$method = $this->_getHandleCallErrorsMethod();
@@ -321,6 +324,7 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 			$this->_model,
 			$this->_getFailureResponse(10486)
 		);
+
 		$this->assertEventFired();
 		$this->assertTrue($redirected);
 	}
