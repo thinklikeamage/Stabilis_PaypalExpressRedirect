@@ -95,19 +95,14 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
 	 *
 	 * @var array
 	 */
-	protected static $_errors = array(
-		static::API_UNABLE_TRANSACTION_COMPLETE => 'https://developer.paypal.com/docs/classic/express-checkout/ht_ec_fundingfailure10486',
-		static::API_UNABLE_PROCESS_PAYMENT      => 'https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ1375&actp=LIST',
-		static::API_DO_EXPRESS_CHECKOUT_FAIL    => 'https://www.paypal-knowledge.com/infocenter/index?page=content&expand=true&locale=en_US&id=FAQ1850',
-		static::API_BAD_SHIPPING_ADDRESS        => 'https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ2025&actp=LIST'
-	);
+	protected $_errors;
 
     /**
      * Internal Constructor
      */
     protected function _construct() {
         parent::_construct();
-        
+
         /// Magento 1.9+ has added the DoExpressCheckoutPayment method to the required response params array.
         /// This array is checked prior to any error checking, therefore an error condition will trigger an 
         /// early exit (even if the error is recoverable).  So we'll remove the 'AMT' field from the required 
@@ -115,6 +110,13 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
         if (version_compare(Mage::getVersion(), '1.9', '>=')) {
             $this->_requiredResponseParams[static::DO_EXPRESS_CHECKOUT_PAYMENT] = array('ACK', 'CORRELATIONID');
         }
+
+        $this->_errors = array(
+            static::API_UNABLE_TRANSACTION_COMPLETE => 'https://developer.paypal.com/docs/classic/express-checkout/ht_ec_fundingfailure10486',
+            static::API_UNABLE_PROCESS_PAYMENT      => 'https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ1375&actp=LIST',
+	        static::API_DO_EXPRESS_CHECKOUT_FAIL    => 'https://www.paypal-knowledge.com/infocenter/index?page=content&expand=true&locale=en_US&id=FAQ1850',
+            static::API_BAD_SHIPPING_ADDRESS        => 'https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ2025&actp=LIST'
+        );
     }
 
     /**
