@@ -142,7 +142,7 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 	protected function assertEventFired() {
 		$this->assertNotEquals(
 			0, 
-			Mage::getDispatchedEventCount(
+			Mage::app()->getDispatchedEventCount(
 				$this->_modelClass->getConstant(
 					'EVENT_EXPRESS_REDIRECT_TRIGGERED'
 				)
@@ -153,7 +153,7 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 	protected function assertEventNotFired() {
 		$this->assertEquals(
 			0, 
-			Mage::getDispatchedEventCount(
+			Mage::app()->getDispatchedEventCount(
 				$this->_modelClass->getConstant(
 					'EVENT_EXPRESS_REDIRECT_TRIGGERED'
 				)
