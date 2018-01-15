@@ -307,9 +307,9 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 
         $mock->expects($this->once())
              ->method('redirectUser')
-             ->willReturnCallback(function() use(&$redirected) {
+             ->will($this->returnCallback(function() use(&$redirected) {
                  $redirected = true;
-            });
+            }));
 
 		// Ensure that the helper method doesn't actually terminate the process.
         $this->replaceByMock(
