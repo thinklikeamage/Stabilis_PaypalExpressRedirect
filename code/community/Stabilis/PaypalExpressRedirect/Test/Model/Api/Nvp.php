@@ -15,6 +15,11 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 	protected function setUp() {
 		parent::setUp();
 		$this->_model = Mage::getModel('stabilis_paypalexpressredirect/api_nvp');
+		$coreSessionMock = $this
+          ->getMockBuilder('Mage_Core_Model_Session')
+          ->setMethods(array('start'))
+          ->getMock();
+		$this->replaceByMock('singleton', 'core/session', $coreSessionMock);
 	}
 	
 	/**
