@@ -54,7 +54,7 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 	}
 	
 	protected function _getFailureResponse($code) {
-		$failure = array(
+		return array(
 			'ACK' => 'Failure', 
 			'L_ERRORCODE0' => $code, 
 			'L_SHORTMESSAGE0' => 'Short Message', 
