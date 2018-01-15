@@ -56,6 +56,19 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 	}
 
 	/**
+	 * Registers an observer with the provided callable with the application.
+	 *
+	 * @param callable $callable
+	 */
+	protected function registerObserver($callable) {
+
+		$observer = new Varien_Event_Observer();
+		$observer->setCallback($callable);
+		Mage::app()->getEvents()->addObserver($observer);
+
+	}
+
+	/**
 	 * Extracts the _requiredResponseParams property from the model under test.
 	 * 
 	 * @return array
@@ -150,6 +163,13 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 			'There was an error processing your order. Please contact us or try again later.' :
 			'PayPal gateway has rejected request. Long Message (#12345: Short Message).';
 
+		$unitTest = $this;
+		$this->registerObserver(function() use($unitTest) {
+
+			// This callback should not execute.
+			$unitTest->assertFalse(true);
+		});
+
 		try {
 
 			$method = $this->_getHandleCallErrorsMethod();
@@ -178,6 +198,11 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 		    'PayPal could not process your payment at this time.  Please <a href="%s">click here</a> to select a different payment method from within your PayPal account and try again.', 
 		    Mage::getUrl('paypal/express/edit')
 		);
+		$invoked = false;
+		$this->registerObserver(function() use(&$invoked) {
+
+			$invoked = true;
+		});
 
 		try {
 
@@ -192,6 +217,7 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 			$this->assertTrue(false);
 
 		} catch(Exception $e) {
+			$this->assertTrue($invoked);
 			$this->assertEquals($expected, $e->getMessage());
 		}
 	}
@@ -208,6 +234,12 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 		    Mage::getUrl('paypal/express/edit')
 		);
 
+		$invoked = false;
+		$this->registerObserver(function() use(&$invoked) {
+
+			$invoked = true;
+		});
+
 		try {
 
 			$method = $this->_getHandleCallErrorsMethod();
@@ -221,6 +253,7 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 			$this->assertTrue(false);
 
 		} catch(Exception $e) {
+			$this->assertTrue($invoked);
 			$this->assertEquals($expected, $e->getMessage());
 		}
 	}
@@ -233,6 +266,12 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 	public function test10736Response() {
 
 		$expected = 'PayPal has determined that the specified shipping address does not exist.  Please double-check your shipping address and try again.';
+
+		$invoked = false;
+		$this->registerObserver(function() use(&$invoked) {
+
+			$invoked = true;
+		});
 
 		try {
 
@@ -247,6 +286,7 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 			$this->assertTrue(false);
 
 		} catch(Exception $e) {
+			$this->assertTrue($invoked);
 			$this->assertEquals($expected, $e->getMessage());
 		}
 	}
