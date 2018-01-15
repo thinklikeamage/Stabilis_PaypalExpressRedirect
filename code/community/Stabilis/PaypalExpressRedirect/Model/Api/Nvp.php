@@ -61,13 +61,6 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
 	 * @var int
 	 */
     const API_UNABLE_TRANSACTION_COMPLETE       = 10486;
-	
-	/**
-	 * The PayPal help page for error code 10486.
-	 * 
-	 * @var string
-	 */
-	const API_HELP_UNABLE_TRANSACTION_COMPLETE  = 'https://developer.paypal.com/docs/classic/express-checkout/ht_ec_fundingfailure10486/';
 
 	/**
 	 * The PayPal error code 10417.
@@ -75,13 +68,6 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
 	 * @var int
 	 */
     const API_UNABLE_PROCESS_PAYMENT = 10417;
-
-	/**
-	 * The PayPal help page for error code 10417.
-	 * 
-	 * @var string
-	 */
-	const API_HELP_UNABLE_PROCESS_PAYMENT = 'https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ1375&actp=LIST';
 	
     /**
 	 * The PayPal error code 10422.
@@ -91,25 +77,11 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
     const API_DO_EXPRESS_CHECKOUT_FAIL          = 10422;
 
 	/**
-	 * The PayPal help page for error code 10422.
-	 * 
-	 * @var string
-	 */
-	const API_HELP_DO_EXPRESS_CHECKOUT_FAIL = 'https://www.paypal-knowledge.com/infocenter/index?page=content&expand=true&locale=en_US&id=FAQ1850';
-	
-	/**
 	 * The PayPal error code 10736.
 	 * 
 	 * @var int
 	 */
     const API_BAD_SHIPPING_ADDRESS              = 10736;
-    
-	/**
-	 * The PayPal help page for error code 10736.
-	 * 
-	 * @var int
-	 */
-	const API_HELP_BAD_SHIPPING_ADDRESS = 'https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ2025&actp=LIST';
 	
     /** 
 	 * The identifier of the event that is dispatched when an express redirect is triggered.
@@ -117,6 +89,18 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
 	 * @var string
 	 */
     const EVENT_EXPRESS_REDIRECT_TRIGGERED      = 'stabilis_paypalexpressredirect_redirect_triggered';
+
+	/**
+	 * A mapping of error codes to help articles.
+	 *
+	 * @var array
+	 */
+	protected static $_errors = array(
+		static::API_UNABLE_TRANSACTION_COMPLETE => 'https://developer.paypal.com/docs/classic/express-checkout/ht_ec_fundingfailure10486',
+		static::API_UNABLE_PROCESS_PAYMENT      => 'https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ1375&actp=LIST',
+		static::API_DO_EXPRESS_CHECKOUT_FAIL    => 'https://www.paypal-knowledge.com/infocenter/index?page=content&expand=true&locale=en_US&id=FAQ1850',
+		static::API_BAD_SHIPPING_ADDRESS        => 'https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ2025&actp=LIST'
+	);
 
     /**
      * Internal Constructor
@@ -185,7 +169,13 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
         try {
 
             // Wrapped in a try-catch block, invoke any third party code that is listening
-            Mage::dispatchEvent(static::EVENT_EXPRESS_REDIRECT_TRIGGERED, array('error_code' => $error));
+            Mage::dispatchEvent(
+                static::EVENT_EXPRESS_REDIRECT_TRIGGERED,
+                array(
+                    'error_code' => $error,
+                    'error_message' => static::$_errors[$error]
+                )
+            );
 
         } catch(Exception $thirdPartyException) {
 
@@ -196,7 +186,7 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
         // Destroy the temporary output buffer
         ob_end_clean();
     }
-    
+
     /**
      * Extends the functionality of the parent method by setting a redirect to 
      * PayPal in the event of certain error conditions.
@@ -212,15 +202,18 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
             parent::_handleCallErrors($response);
 
         } catch (Exception $ex) {
-            
+
             /// If there's more than one error, then there's no silver bullet.
             if(count($this->_callErrors) > 1) {
                 $this->_rethrow($ex);
             }
-            
+
             $error = $this->_callErrors[0];
 
-            $this->_dispatchRedirectEvent($error);
+            // If the error code is one we handle, dispatch an event.
+            if(isset(static::$_errors[$error])) {
+                $this->_dispatchRedirectEvent($error);
+            }
 
             switch($error) {
 
