@@ -26,10 +26,26 @@
 
 /**
  * Data helper
- * 
+ *
  * @category   Stabilis
  * @package    Stabilis_PaypalExpressRedirect
  */
 class Stabilis_PaypalExpressRedirect_Helper_Data extends Mage_Core_Helper_Data {
-    
+
+    /**
+     * Redirects the user back to PayPal.
+	 *
+	 * This method does not return.
+     */
+    public function redirectUser() {
+        Mage::app()->getFrontController()
+                   ->getResponse()
+                   ->setRedirect(
+                       Mage::getUrl('paypal/express/edit'),
+                       static::HTTP_TEMPORARY_REDIRECT
+                    )
+                   ->sendResponse();
+        exit;
+    }
+
 }

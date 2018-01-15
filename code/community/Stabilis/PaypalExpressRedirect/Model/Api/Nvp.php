@@ -103,10 +103,10 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
     protected function _construct() {
         parent::_construct();
 
-        /// Magento 1.9+ has added the DoExpressCheckoutPayment method to the required response params array.
-        /// This array is checked prior to any error checking, therefore an error condition will trigger an 
-        /// early exit (even if the error is recoverable).  So we'll remove the 'AMT' field from the required 
-        /// params array.
+        // Magento 1.9+ has added the DoExpressCheckoutPayment method to the required response params array.
+        // This array is checked prior to any error checking, therefore an error condition will trigger an 
+        // early exit (even if the error is recoverable).  So we'll remove the 'AMT' field from the required 
+        // params array.
         if (version_compare(Mage::getVersion(), '1.9', '>=')) {
             $this->_requiredResponseParams[static::DO_EXPRESS_CHECKOUT_PAYMENT] = array('ACK', 'CORRELATIONID');
         }
@@ -129,12 +129,12 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
     protected function _rethrow($ex) {
         if (version_compare(Mage::getVersion(), '1.9', '>=')) {
 
-            /// Preserve Magneto 1.9+ Behavior
+            // Preserve Magneto 1.9+ Behavior
             Mage::throwException(Mage::helper('paypal')
                     ->__('There was an error processing your order. Please contact us or try again later.'));
         } else {
 
-            /// Preserve Magento <= 1.8 Behavior
+            // Preserve Magento <= 1.8 Behavior
             throw $ex;
         }
     }
@@ -200,12 +200,12 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
     protected function _handleCallErrors($response) {
         try {
 
-            /// Let the default functionality take its course
+            // Let the default functionality take its course
             parent::_handleCallErrors($response);
 
         } catch (Exception $ex) {
 
-            /// If there's more than one error, then there's no silver bullet.
+            // If there's more than one error, then there's no silver bullet.
             if(count($this->_callErrors) > 1) {
                 $this->_rethrow($ex);
             }
@@ -219,26 +219,28 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
 
             switch($error) {
 
-                /// Redirect the user back to PayPal
+                // Redirect the user back to PayPal
+				// TODO: Is there a better way to do this?
                 case self::API_UNABLE_TRANSACTION_COMPLETE:
-                    Mage::app()->getFrontController()->getResponse()
-                        ->setRedirect(Mage::getUrl('paypal/express/edit'), static::HTTP_TEMPORARY_REDIRECT)
-                        ->sendResponse();
-                    exit;
 
-                /// Give the user an option to click a link to go back and 
-                /// select another funding source
+					Mage::helper('stabiblis_paypalexpressredirect')->redirectUser();
+
+					// Technically not required - although useful for being able to unit test this case.
+					break;
+
+                // Give the user an option to click a link to go back and 
+                // select another funding source
                 case self::API_UNABLE_PROCESS_PAYMENT:
                 case self::API_DO_EXPRESS_CHECKOUT_FAIL:
                     Mage::throwException(Mage::helper('stabilis_paypalexpressredirect')
                         ->__('PayPal could not process your payment at this time.  Please <a href="%s">click here</a> to select a different payment method from within your PayPal account and try again.', Mage::getUrl('paypal/express/edit')));
 
-                /// The shipping address isn't right.  Fix it on this page.
+                // The shipping address isn't right.  Fix it on this page.
                 case self::API_BAD_SHIPPING_ADDRESS:
                     Mage::throwException(Mage::helper('stabilis_paypalexpressredirect')
                         ->__('PayPal has determined that the specified shipping address does not exist.  Please double-check your shipping address and try again.'));
                     
-                /// Other error?  Let the caller handle it.
+                // Other error?  Let the caller handle it.
                 default:
                     $this->_rethrow($ex);
             }

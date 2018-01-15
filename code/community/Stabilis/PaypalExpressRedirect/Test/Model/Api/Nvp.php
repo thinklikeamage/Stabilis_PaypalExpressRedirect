@@ -139,9 +139,12 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 		);
 	}
 
+	/**
+	 * Asserts that at least one 'EVENT_EXPRESS_REDIRECT_TRIGGERED' event has been dispatched.
+	 */
 	protected function assertEventFired() {
 		$this->assertNotEquals(
-			0, 
+			0,
 			Mage::app()->getDispatchedEventCount(
 				$this->_modelClass->getConstant(
 					'EVENT_EXPRESS_REDIRECT_TRIGGERED'
@@ -150,9 +153,12 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 		);
 	}
 	
+	/**
+	 * Asserts that no 'EVENT_EXPRESS_REDIRECT_TRIGGERED' event has been fired.
+	 */
 	protected function assertEventNotFired() {
 		$this->assertEquals(
-			0, 
+			0,
 			Mage::app()->getDispatchedEventCount(
 				$this->_modelClass->getConstant(
 					'EVENT_EXPRESS_REDIRECT_TRIGGERED'
@@ -273,7 +279,7 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 			$method = $this->_getHandleCallErrorsMethod();
 
 			$method->invoke(
-				$this->_model, 
+				$this->_model,
 				$this->_getFailureResponse(10736)
 			);
 
@@ -294,7 +300,29 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 	 * I still have to do this one.
 	 */
 	public function test10486Response() {
-		$this->assertTrue(true);
+
+        $redirected = false;
+
+		// Ensure that the helper method doesn't actually terminate the process.
+        $this->replaceByMock(
+            'helper',
+            'stabilis/paypalexpressredirect',
+            $this->getMock('Stabilis_PaypalExpressRedirect_Helper_Data')
+                ->expects($this->once())
+                ->method('redirectUser')
+				->willReturn(function() use(&$redirected) {
+                    $redirected = true;
+				})
+        );
+
+		$method = $this->_getHandleCallErrorsMethod();
+
+		$method->invoke(
+			$this->_model,
+			$this->_getFailureResponse(10486)
+		);
+		$this->assertEventFired();
+		$this->assertTrue($redirected);
 	}
-	
+
 }
