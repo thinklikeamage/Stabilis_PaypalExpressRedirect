@@ -57,12 +57,12 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 			'L_SEVERITYCODE0' => ''
 		);
 	}
-	// %s
+	
 	public function testUnsupportedResponse() {
 		$expected = 'PayPal gateway has rejected request. Long Message (#12345: Short Message)';
 		$method = $this->_getHandleCallErrorsMethod();
 		try {
-			$method->invoke($this->model, $this->_getFailureResponse(12345));
+			$method->invoke($this->_model, $this->_getFailureResponse(12345));
 			$this->assertTrue(false);
 		} catch(Exception $e) {
 			$this->assertEquals($expected, $e->getMessage());
@@ -80,7 +80,7 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 		);
 		$method = $this->_getHandleCallErrorsMethod();
 		try {
-			$method->invoke($this->model, $this->_getFailureResponse(10417));
+			$method->invoke($this->_model, $this->_getFailureResponse(10417));
 			$this->assertTrue(false);
 		} catch(Exception $e) {
 			$this->assertEquals($expected, $e->getMessage());
@@ -94,7 +94,7 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 		);
 		$method = $this->_getHandleCallErrorsMethod();
 		try {
-			$method->invoke($this->model, $this->_getFailureResponse(10422));
+			$method->invoke($this->_model, $this->_getFailureResponse(10422));
 			$this->assertTrue(false);
 		} catch(Exception $e) {
 			$this->assertEquals($expected, $e->getMessage());
@@ -105,7 +105,7 @@ class Stabilis_PaypalExpressRedirect_Test_Model_Api_Nvp extends EcomDev_PHPUnit_
 		$expected = 'PayPal has determined that the specified shipping address does not exist.  Please double-check your shipping address and try again.';
 		$method = $this->_getHandleCallErrorsMethod();
 		try {
-			$method->invoke($this->model, $this->_getFailureResponse(10736));
+			$method->invoke($this->_model, $this->_getFailureResponse(10736));
 			$this->assertTrue(false);
 		} catch(Exception $e) {
 			$this->assertEquals($expected, $e->getMessage());
