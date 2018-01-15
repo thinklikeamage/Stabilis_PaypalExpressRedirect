@@ -223,7 +223,7 @@ class Stabilis_PaypalExpressRedirect_Model_Api_Nvp extends Mage_Paypal_Model_Api
 				// TODO: Is there a better way to do this?
                 case self::API_UNABLE_TRANSACTION_COMPLETE:
 
-					Mage::helper('stabiblis_paypalexpressredirect')->redirectUser();
+					Mage::helper('stabiblis/paypalexpressredirect')->redirectUser();
 
 					// Technically not required - although useful for being able to unit test this case.
 					break;
