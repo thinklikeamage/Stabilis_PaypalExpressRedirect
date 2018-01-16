@@ -1,14 +1,5 @@
 language: php
-#php:
-#  - 5.4
-#  - 5.5
-#env:
-#  global:
-#    - MAGENTO_DB_ALLOWSAME=1
-#    - SKIP_CLEANUP=1
-#   - MAGENTO_VERSION=magento-mirror-1.7.0.2
-#  - MAGENTO_VERSION=magento-mirror-1.9.3.4
-#  - MAGENTO_VERSION=magento-mirror-1.8.1.0
+
 before_install:
   - sudo apt-get purge mysql-* -y
   - sudo rm -rf /etc/mysql /var/lib/mysql
@@ -19,37 +10,21 @@ before_install:
   - sudo apt-get update -y
   - sudo apt-get install percona-server-server-5.5 -y
 
+php:
+  - 5.3
+#  - 5.4
+#  - 5.5
+
+env:
+  global:
+    - MAGENTO_VERSION=magento-mirror-1.7.0.2
+#    - MAGENTO_VERSION=magento-mirror-1.8.1.0
+#    - MAGENTO_VERSION=magento-mirror-1.9.2.2
+
 matrix:
   include:
-#    - dist: precise
-#      env:  MAGENTO_VERSION=magento-mirror-1.7.0.2
-#      php:  5.3
-#    - dist: precise
-#      env:  MAGENTO_VERSION=magento-mirror-1.8.1.0
-#      php:  5.3
-#    - dist: precise
-#      env:  MAGENTO_VERSION=magento-mirror-1.9.2.2
-#      php:  5.3
-#    - dist:  trusty
-#      env:   MAGENTO_VERSION=magento-mirror-1.7.0.2
-#      php:   5.4
-#    - dist:  trusty
-#      env:   MAGENTO_VERSION=magento-mirror-1.8.1.0
-#      php:   5.4
-#    - dist:  trusty
-#      env:   MAGENTO_VERSION=magento-mirror-1.9.2.2
-#      php:   5.4
-    - dist:  trusty
-      env:   MAGENTO_VERSION=magento-mirror-1.7.0.2
-      php:   5.5
-    - dist:  trusty
-      env:   MAGENTO_VERSION=magento-mirror-1.8.1.0
-      php:   5.5
-    - dist:  trusty
-      env:   MAGENTO_VERSION=magento-mirror-1.9.2.2
-      php:   5.5
-  exclude:
-
+    - php: 5.3
+      dist: precise    
 script:
   - curl -sSL https://raw.githubusercontent.com/LukeLeber/MageTestStand/master/setup.sh | bash
 notifications:
