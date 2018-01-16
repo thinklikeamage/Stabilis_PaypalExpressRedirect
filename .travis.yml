@@ -9,6 +9,16 @@ language: php
 #   - MAGENTO_VERSION=magento-mirror-1.7.0.2
 #  - MAGENTO_VERSION=magento-mirror-1.9.3.4
 #  - MAGENTO_VERSION=magento-mirror-1.8.1.0
+before_install:
+  - sudo apt-get purge mysql-server mysql-client mysql-common mysql-server-core-5.7 mysql-client-core-5.7
+  - sudo rm -rf /etc/mysql /var/lib/mysql
+  - sudo apt-get autoremove
+  - sudo apt-get autoclean
+  - wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb
+  - dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
+  - apt-get update
+  - apt-get install percona-server-server-5.5
+
 matrix:
   include:
 #    - dist: precise
