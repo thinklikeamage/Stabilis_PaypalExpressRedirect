@@ -11,7 +11,7 @@ language: php
 #  - MAGENTO_VERSION=magento-mirror-1.8.1.0
 matrix:
   include:
-    - dist: trusty
+    - dist: precise
       env:  MAGENTO_VERSION=magento-mirror-1.6.2.0
       php: 5.2.10
 #    - dist: precise
