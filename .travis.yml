@@ -30,18 +30,24 @@ matrix:
 #    - dist: precise
 #      env:  MAGENTO_VERSION=magento-mirror-1.9.2.2
 #      php:  5.3
-    - dist:  trusty
-      env:   MAGENTO_VERSION=magento-mirror-1.7.0.2
-      php:   5.4
-    - dist:  trusty
-      env:   MAGENTO_VERSION=magento-mirror-1.8.1.0
-      php:   5.4
-    - dist:  trusty
-      env:   MAGENTO_VERSION=magento-mirror-1.9.2.2
-      php:   5.4
 #    - dist:  trusty
 #      env:   MAGENTO_VERSION=magento-mirror-1.7.0.2
-#      php:   5.5
+#      php:   5.4
+#    - dist:  trusty
+#      env:   MAGENTO_VERSION=magento-mirror-1.8.1.0
+#      php:   5.4
+#    - dist:  trusty
+#      env:   MAGENTO_VERSION=magento-mirror-1.9.2.2
+#      php:   5.4
+    - dist:  trusty
+      env:   MAGENTO_VERSION=magento-mirror-1.7.0.2
+      php:   5.5
+    - dist:  trusty
+      env:   MAGENTO_VERSION=magento-mirror-1.8.1.0
+      php:   5.5
+    - dist:  trusty
+      env:   MAGENTO_VERSION=magento-mirror-1.9.2.2
+      php:   5.5
   exclude:
 
 script:
