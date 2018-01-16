@@ -1,9 +1,6 @@
 language: php
 matrix:
   - dist: precise
-    env:  MAGENTO_VERSION=magento-mirror-1.6.2.0
-    php:  5.3.29
-  - dist: precise
     env:  MAGENTO_VERSION=magento-mirror-1.7.0.2
     php:  5.3.29
   - dist: precise
