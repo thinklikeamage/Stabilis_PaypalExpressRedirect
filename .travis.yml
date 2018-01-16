@@ -1,0 +1,43 @@
+language: php
+
+# There are issues with Magento 1.7.0.2 and MySQL 5.6+
+# So just uninstall mysql and install percona server 5.5.
+before_install:
+  - sudo apt-get purge mysql-* -y
+  - sudo rm -rf /etc/mysql /var/lib/mysql
+  - sudo apt-get autoremove -y
+  - sudo apt-get autoclean -y
+  - sudo wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb
+  - sudo dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
+  - sudo apt-get update -y
+  - sudo apt-get install percona-server-server-5.5 -y
+
+# Run all tests on php 5.3, 5.4, and 5.5
+php:
+  - 5.4
+  - 5.5
+
+# Run all tests on 1.7.0.2, 1.8.1.0, and 1.9.2.2
+# Pulled from mirrors since Magento Commerce links don't work anymore.
+env:
+  - MAGENTO_VERSION=magento-mirror-1.7.0.2
+  - MAGENTO_VERSION=magento-mirror-1.8.1.0
+  - MAGENTO_VERSION=magento-mirror-1.9.2.2
+
+# php 5.3 requires ubuntu 12.04
+matrix:
+  include:
+    - php: 5.3
+      dist: precise
+      env: MAGENTO_VERSION=magento-mirror-1.7.0.2
+    - php: 5.3
+      dist: precise
+      env: MAGENTO_VERSION=magento-mirror-1.8.1.0
+    - php: 5.3
+      dist: precise
+      env: MAGENTO_VERSION=magento-mirror-1.9.2.2
+
+
+# Finally, install the MageTestStand framework to get things rolling.
+script:
+  - curl -sSL https://raw.githubusercontent.com/LukeLeber/MageTestStand/master/setup.sh | bash

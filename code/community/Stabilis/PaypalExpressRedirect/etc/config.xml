@@ -21,7 +21,7 @@
  *
  * @category    Stabilis
  * @package     Stabilis_PaypalExpressRedirect
- * @copyright  Copyright (c) 2007-2016 Luke A. Leber (https://www.thinklikeamage.com)
+ * @copyright  Copyright (c) 2007-2018 Luke A. Leber (https://www.thinklikeamage.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
  -->
@@ -49,6 +49,9 @@
             </stabilis_paypalexpressredirect>
         </helpers>
         <models>
+            <stabilis_paypalexpressredirect>
+                <class>Stabilis_PaypalExpressRedirect_Model</class>
+            </stabilis_paypalexpressredirect>
             <paypal>
                 <rewrite>
                     <api_nvp>Stabilis_PaypalExpressRedirect_Model_Api_Nvp</api_nvp>
@@ -56,4 +59,11 @@
             </paypal>
         </models>
     </global>
+    <phpunit>
+        <suite>
+            <modules>
+                <Stabilis_PaypalExpressRedirect />
+         </modules>
+    </suite>
+    </phpunit>
 </config>

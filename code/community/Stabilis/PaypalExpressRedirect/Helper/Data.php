@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?php
 /**
  * Magento
  *
@@ -21,19 +20,32 @@
  *
  * @category    Stabilis
  * @package     Stabilis_PaypalExpressRedirect
- * @copyright  Copyright (c) 2007-2016 Luke A. Leber (https://www.thinklikeamage.com)
+ * @copyright  Copyright (c) 2007-2018 Luke A. Leber (https://www.thinklikeamage.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
--->
-<config>
-    <modules>
-        <Stabilis_PaypalExpressRedirect>
-            <active>true</active>
-            <codePool>community</codePool>
-            <depends>
-                <Mage_Paypal />
-            	<Stabilis_Core />
-            </depends>
-        </Stabilis_PaypalExpressRedirect>
-    </modules>
-</config>
+
+/**
+ * Data helper
+ *
+ * @category   Stabilis
+ * @package    Stabilis_PaypalExpressRedirect
+ */
+class Stabilis_PaypalExpressRedirect_Helper_Data extends Mage_Core_Helper_Data {
+
+    /**
+     * Redirects the user back to PayPal.
+	 *
+	 * This method does not return.
+     */
+    public function redirectUser() {
+        Mage::app()->getFrontController()
+                   ->getResponse()
+                   ->setRedirect(
+                       Mage::getUrl('paypal/express/edit'),
+                       static::HTTP_TEMPORARY_REDIRECT
+                    )
+                   ->sendResponse();
+        exit;
+    }
+
+}

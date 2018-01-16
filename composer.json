@@ -1,0 +1,15 @@
+{
+    "name": "stabilis/paypal-express-redirect",
+    "description": "Some PayPal error conditions are recoverable. Enhance your store by letting your customers recover a failed check out.",
+    "type": "project",
+    "require-dev": {},
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luke Leber",
+            "email": "lukeleber@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
