@@ -14,7 +14,6 @@ before_install:
 
 # Run all tests on php 5.3, 5.4, and 5.5
 php:
-  - 5.3
   - 5.4
   - 5.5
 
@@ -31,6 +30,12 @@ matrix:
     - php: 5.3
       dist: precise
       env: MAGENTO_VERSION=magento-mirror-1.7.0.2
+    - php: 5.3
+      dist: precise
+      env: MAGENTO_VERSION=magento-mirror-1.8.1.0
+    - php: 5.3
+      dist: precise
+      env: MAGENTO_VERSION=magento-mirror-1.9.2.2
 
 
 # Finally, install the MageTestStand framework to get things rolling.
