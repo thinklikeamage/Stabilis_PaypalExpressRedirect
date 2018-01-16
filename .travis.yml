@@ -14,10 +14,10 @@ before_install:
   - sudo rm -rf /etc/mysql /var/lib/mysql
   - sudo apt-get autoremove -y
   - sudo apt-get autoclean -y
-  - wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb
-  - dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
-  - apt-get update -y
-  - apt-get install percona-server-server-5.5 -y
+  - sudo wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb
+  - sudo dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
+  - sudo apt-get update -y
+  - sudo apt-get install percona-server-server-5.5 -y
 
 matrix:
   include:
