@@ -3,13 +3,17 @@ php:
   - 5.4
   - 5.5
 env:
-#  global:
-#    - MAGENTO_DB_ALLOWSAME=1
-#    - SKIP_CLEANUP=1
-   - MAGENTO_VERSION=magento-mirror-1.7.0.2
-#  - MAGENTO_VERSION=magento-mirror-1.9.3.4
-#  - MAGENTO_VERSION=magento-mirror-1.8.1.0
+  - MAGENTO_VERSION=magento-mirror-1.5.1.0
+  - MAGENTO_VERSION=magento-mirror-1.6.2.0
+  - MAGENTO_VERSION=magento-mirror-1.7.0.2
+  - MAGENTO_VERSION=magento-mirror-1.8.1.0
+  - MAGENTO_VERSION=magento-mirror-1.9.3.7
 matrix:
+  exclude:
+    - php: 5.4
+      env: MAGENTO_VERSION=magento-mirror-1.7.0.2
+    - php: 5.5
+      env: MAGENTO_VERSION=magento-mirror-1.7.0.2
   include:
     - php: 5.3.29
       dist: precise
