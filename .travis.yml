@@ -21,16 +21,17 @@ php:
 # Run all tests on 1.7.0.2, 1.8.1.0, and 1.9.2.2
 # Pulled from mirrors since Magento Commerce links don't work anymore.
 env:
-  global:
-    - MAGENTO_VERSION=magento-mirror-1.7.0.2
-    - MAGENTO_VERSION=magento-mirror-1.8.1.0
-    - MAGENTO_VERSION=magento-mirror-1.9.2.2
+  - MAGENTO_VERSION=magento-mirror-1.7.0.2
+  - MAGENTO_VERSION=magento-mirror-1.8.1.0
+  - MAGENTO_VERSION=magento-mirror-1.9.2.2
 
 # php 5.3 requires ubuntu 12.04
 matrix:
   include:
     - php: 5.3
-      dist: precise    
+      dist: precise
+      env: MAGENTO_VERSION=magento-mirror-1.7.0.2
+
 
 # Finally, install the MageTestStand framework to get things rolling.
 script:
