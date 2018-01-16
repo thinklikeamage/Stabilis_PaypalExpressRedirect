@@ -10,14 +10,14 @@ language: php
 #  - MAGENTO_VERSION=magento-mirror-1.9.3.4
 #  - MAGENTO_VERSION=magento-mirror-1.8.1.0
 before_install:
-  - sudo apt-get purge mysql-*
+  - sudo apt-get purge mysql-* -y
   - sudo rm -rf /etc/mysql /var/lib/mysql
-  - sudo apt-get autoremove
-  - sudo apt-get autoclean
+  - sudo apt-get autoremove -y
+  - sudo apt-get autoclean -y
   - wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb
   - dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
-  - apt-get update
-  - apt-get install percona-server-server-5.5
+  - apt-get update -y
+  - apt-get install percona-server-server-5.5 -y
 
 matrix:
   include:
