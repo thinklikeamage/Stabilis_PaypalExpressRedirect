@@ -28,7 +28,7 @@ matrix:
 #      env:  MAGENTO_VERSION=magento-mirror-1.8.1.0
 #      php:  5.3
 #    - dist: precise
-#      env:  MAGENTO_VERSION=magento-mirror-1.9.3.7
+#      env:  MAGENTO_VERSION=magento-mirror-1.9.2.2
 #      php:  5.3
     - dist:  trusty
       env:   MAGENTO_VERSION=magento-mirror-1.7.0.2
@@ -37,7 +37,7 @@ matrix:
       env:   MAGENTO_VERSION=magento-mirror-1.8.1.0
       php:   5.4
     - dist:  trusty
-      env:   MAGENTO_VERSION=magento-mirror-1.9.3.7
+      env:   MAGENTO_VERSION=magento-mirror-1.9.2.2
       php:   5.4
 #    - dist:  trusty
 #      env:   MAGENTO_VERSION=magento-mirror-1.7.0.2
