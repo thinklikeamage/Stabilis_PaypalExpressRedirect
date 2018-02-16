@@ -42,7 +42,7 @@ class Stabilis_PaypalExpressRedirect_Helper_Data extends Mage_Core_Helper_Data {
                    ->getResponse()
                    ->setRedirect(
                        Mage::getUrl('paypal/express/edit'),
-                       static::HTTP_TEMPORARY_REDIRECT
+                       Stabilis_PaypalExpressRedirect_Model_Api_Nvp::HTTP_TEMPORARY_REDIRECT
                     )
                    ->sendResponse();
         exit;
